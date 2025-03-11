@@ -1,6 +1,6 @@
 # Go Utils
 
-Reusable logging and error handling utilities for: [free-tools](https://github.com/Al-Khalsi/free-tools)
+Reusable logging and error handling utilities for: [free-tools](#)
 
 ## Installation
 ```bash
