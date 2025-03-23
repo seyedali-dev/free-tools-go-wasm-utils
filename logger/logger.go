@@ -21,6 +21,8 @@ const (
 	Info
 	// Error level logs error messages.
 	Error
+	// Warn level logs warning messages.
+	Warn
 )
 
 // Logger represents a logging instance with a configurable log level.
@@ -61,5 +63,15 @@ func (l *Logger) Error(msg string) {
 	if l.level <= Error {
 		// Log the message to the JavaScript console with an error prefix.
 		JSLog("[ERROR] :: " + msg)
+	}
+}
+
+// Warn logs warning messages.
+// It is used to log messages that indicate something might not be as expected.
+func (l *Logger) Warn(msg string) {
+	// Check if the logger's level allows for Warn messages.
+	if l.level <= Warn {
+		// Log the message to the JavaScript console with a warn prefix.
+		JSLog("[WARN] :: " + msg)
 	}
 }

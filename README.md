@@ -1,6 +1,6 @@
 # Go WASM Utils
 
-Reusable logging and error handling utilities for Go/WASM projects. Provides structured logging with panic recovery and standardized error handling for WebAssembly environments.
+Reusable logging, error, codec (image) handling utilities for Go/WASM projects. Provides structured logging with panic recovery and standardized error handling for WebAssembly environments.
 
 ## Features
 - 🚀 WASM-friendly logging to JavaScript console
@@ -65,6 +65,17 @@ result, err := cropImage(opts)
 if err != nil {
     return errors.ErrCropFailed.Wrap(fmt.Errorf("crop failed for image %s: %w", imageName, err))
 }
+```
+
+### Image Codec Examples
+```go
+var data []byte // base64 encoded image
+image, format, err := codec.DefaultDecoder.Decode(data)
+if err != nil {
+    return errors.ErrDecodeImage.Wrap(err)
+}
+
+// Do something with image and format...
 ```
 
 ### WASM Panic Recovery
