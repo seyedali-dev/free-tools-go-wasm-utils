@@ -9,31 +9,31 @@ import (
 // GetEncoderFactory returns an encoder factory for the given format.
 //
 // Supported formats:
-//  1. "jpeg"/"jpg": JPEG format with default quality (90%)
-//  2. "png": PNG format with default compression (png.DefaultCompression)
-//  3. "webp": WEBP format with default extended format (false)
-//  4. "avif": AVIF format not implemented yet
-//  5. "tiff": TIFF format with default compression (uncompressed)
-//  6. "bmp": BMP format
-//  7. "gif": GIF format
-//  8. "ico": ICO format with default dimension (codecstrategy.DefaultICOSize)
-func GetEncoderFactory(format string) (codec.ImageCodec, error) {
+//  1. codec.PNG: PNG format with default compression (png.DefaultCompression)
+//  2. codec.JPEG/codec.JPG: JPEG format with default quality (90%)
+//  3. codec.WEBP: WEBP format with default extended format (false)
+//  4. codec.AVIF: AVIF format not implemented yet
+//  5. codec.TIFF: TIFF format with default compression (uncompressed)
+//  6. codec.BMP: BMP format
+//  7. codec.GIF: GIF format
+//  8. codec.ICO: ICO format with default dimension (codecstrategy.DefaultICOSize)
+func GetEncoderFactory(format codec.SupportedCodecFormat) (codec.ImageCodec, error) {
 	switch format {
-	case "png":
+	case codec.PNG:
 		return &codecstrategy.PNGCodec{}, nil
-	case "jpeg", "jpg":
+	case codec.JPEG, codec.JPG:
 		return &codecstrategy.JPEGCodec{}, nil
-	case "webp":
+	case codec.WEBP:
 		return &codecstrategy.WEBPCodec{}, nil
-	case "avif":
+	case codec.AVIF:
 		return &codecstrategy.AVIFCodec{}, nil
-	case "tiff":
+	case codec.TIFF:
 		return &codecstrategy.TIFFCodec{}, nil
-	case "bmp":
+	case codec.BMP:
 		return &codecstrategy.BMPCodec{}, nil
-	case "gif":
+	case codec.GIF:
 		return &codecstrategy.GIFCodec{}, nil
-	case "ico":
+	case codec.ICO:
 		return &codecstrategy.ICOCodec{}, nil
 	default:
 		return nil, errors.ErrUnsupportedFormat
