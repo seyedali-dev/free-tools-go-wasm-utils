@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"image/png"
 	"os"
 
 	"github.com/seyedali-dev/free-tools-go-wasm-utils/codec"
@@ -28,18 +29,24 @@ func main() {
 	)
 
 	// Get a JPEG codec with quality option set to 90.
-	//jpgCodec, err := codecfactory.GetEncoderFactory(codec.JPEG)
-	//jpgCodec, err := codecfactory.GetEncoderFactory(codec.PNG)
-	//jpgCodec, err := codecfactory.GetEncoderFactory(codec.ICO)
-	//jpgCodec, err := codecfactory.GetEncoderFactory(codec.TIFF)
-	//jpgCodec, err := codecfactory.GetEncoderFactory(codec.BMP)
-	//jpgCodec, err := codecfactory.GetEncoderFactory(codec.WEBP)
-	jpgCodec, err := codecfactory.GetEncoderFactory(codec.GIF)
-	//jpgCodec, err := codecfactory.GetEncoderFactory(codec.AVIF)
+	//imgCodecTest, err := codecfactory.GetEncoderFactory(codec.JPEG)
+	imgCodecTest, err := codecfactory.GetEncoderFactory(codec.PNG)
+	//imgCodecTest, err := codecfactory.GetEncoderFactory(codec.ICO)
+	//imgCodecTest, err := codecfactory.GetEncoderFactory(codec.TIFF)
+	//imgCodecTest, err := codecfactory.GetEncoderFactory(codec.BMP)
+	//imgCodecTest, err := codecfactory.GetEncoderFactory(codec.WEBP)
+	//imgCodecTest, err := codecfactory.GetEncoderFactory(codec.GIF)
+	//imgCodecTest, err := codecfactory.GetEncoderFactory(codec.AVIF)
 	if err != nil {
 		panic(err)
 	}
 
+	testEncode(err, imgCodecTest, img)
+
+	testDecode(err, img, imgCodecTest)
+}
+
+func testEncode(err error, jpgCodec codec.ImageCodec, img *image.RGBA) {
 	// Encode image to buffer.
 	buf := &bytes.Buffer{}
 	err = jpgCodec.Encode(buf, img, map[string]interface{}{"quality": 90})
@@ -61,4 +68,27 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Image saved as " + output)
+}
+
+func testDecode(err error, img *image.RGBA, imgCodecTest codec.ImageCodec) {
+	byt, err := convertImageToPNGBytes(img)
+	if err != nil {
+		panic(err)
+	}
+	buffer := bytes.NewBuffer(byt)
+	decode, err := imgCodecTest.Decode(buffer, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Decode: ", decode.Bounds())
+}
+
+// convertImageToPNGBytes converts an image.Image to a byte slice in PNG format.
+func convertImageToPNGBytes(img image.Image) ([]byte, error) {
+	var buf bytes.Buffer
+	err := png.Encode(&buf, img)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
