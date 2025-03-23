@@ -5,7 +5,9 @@ import (
 	"encoding/base64"
 	"fmt"
 	"image"
+	"image/color"
 	"image/draw"
+	"strconv"
 	"strings"
 
 	"github.com/seyedali-dev/free-tools-go-wasm-utils/errors"
@@ -74,4 +76,52 @@ func normalizeImage(img image.Image) *image.RGBA {
 	rgba := image.NewRGBA(img.Bounds())
 	draw.Draw(rgba, rgba.Bounds(), img, image.Point{}, draw.Src)
 	return rgba
+}
+
+// ApplyBackgroundColor applies a background color to the source image.
+func ApplyBackgroundColor(img image.Image, bg color.Color) image.Image {
+	// Create a new RGBA image with the same dimensions
+	bounds := img.Bounds()
+	bgImg := image.NewRGBA(bounds)
+
+	// Fill the background with the specified color
+	draw.Draw(bgImg, bounds, &image.Uniform{C: bg}, image.Point{}, draw.Src)
+
+	// Draw the source image on top
+	draw.Draw(bgImg, bounds, img, bounds.Min, draw.Over)
+
+	return bgImg
+}
+
+// ParseHexColor converts a hex string to a color.Color.
+func ParseHexColor(s string) (color.Color, error) {
+	// Validate the color string.
+	if s == "" {
+		// return default white color if not provided.
+		return color.White, nil
+	}
+	if s[0] == '#' {
+		s = s[1:]
+	}
+	if len(s) != 6 {
+		return nil, errors.ErrParseHexColor.WrapErr(fmt.Errorf("color string must be 6 characters"))
+	}
+
+	// Parse string to RGB colors.
+	r, err := strconv.ParseUint(s[0:2], 16, 8)
+	if err != nil {
+		return nil, errors.ErrParseHexColor.WrapErr(fmt.Errorf("error occurred parsing [0:2] color hex: %w", err))
+	}
+
+	g, err := strconv.ParseUint(s[2:4], 16, 8)
+	if err != nil {
+		return nil, errors.ErrParseHexColor.WrapErr(fmt.Errorf("error occurred parsing [2:4] color hex: %w", err))
+	}
+
+	b, err := strconv.ParseUint(s[4:6], 16, 8)
+	if err != nil {
+		return nil, errors.ErrParseHexColor.WrapErr(fmt.Errorf("error occurred parsing [4:6] color hex: %w", err))
+	}
+
+	return color.RGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: 255}, nil
 }

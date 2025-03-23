@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"image"
-	"image/color"
-	"image/draw"
 	"image/png"
 	"os"
 
@@ -14,7 +12,7 @@ import (
 )
 
 func main() {
-	// Create a dummy image (a red rectangle)
+	/*// Create a dummy image (a red rectangle)
 	rect := image.Rect(0, 0, 100, 100)
 	img := image.NewRGBA(rect)
 	draw.Draw(
@@ -26,7 +24,19 @@ func main() {
 		},
 		image.Point{},
 		draw.Src,
-	)
+	)*/
+
+	// Read the image into image.Image
+	inputImg := fmt.Sprintf("./test/input.%s", "png")
+	file, err := os.Open(inputImg)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	img, err := png.Decode(file)
+	if err != nil {
+		panic(err)
+	}
 
 	// Get a JPEG codec with quality option set to 90.
 	//imgCodecTest, err := codecfactory.GetEncoderFactory(codec.JPEG)
@@ -43,10 +53,10 @@ func main() {
 
 	testEncode(err, imgCodecTest, img)
 
-	testDecode(err, img, imgCodecTest)
+	testDecode(err, img)
 }
 
-func testEncode(err error, jpgCodec codec.ImageCodec, img *image.RGBA) {
+func testEncode(err error, jpgCodec codec.ImageCodec, img image.Image) {
 	// Encode image to buffer.
 	buf := &bytes.Buffer{}
 	err = jpgCodec.Encode(buf, img, map[string]interface{}{"quality": 90})
@@ -61,7 +71,7 @@ func testEncode(err error, jpgCodec codec.ImageCodec, img *image.RGBA) {
 	//output := "output.tiff"
 	//output := "output.bmp"
 	//output := "output.webp"
-	output := "output.gif"
+	output := "./test/output.png"
 	//output := "output.avif"
 	err = os.WriteFile(output, buf.Bytes(), 0644)
 	if err != nil {
@@ -70,13 +80,13 @@ func testEncode(err error, jpgCodec codec.ImageCodec, img *image.RGBA) {
 	fmt.Println("Image saved as " + output)
 }
 
-func testDecode(err error, img *image.RGBA, imgCodecTest codec.ImageCodec) {
+func testDecode(err error, img image.Image) {
 	byt, err := convertImageToPNGBytes(img)
 	if err != nil {
 		panic(err)
 	}
 	buffer := bytes.NewBuffer(byt)
-	decode, err := imgCodecTest.Decode(buffer, nil)
+	decode, _, err := codec.Decode(buffer)
 	if err != nil {
 		panic(err)
 	}
