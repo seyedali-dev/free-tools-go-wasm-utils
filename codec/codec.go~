@@ -11,6 +11,6 @@ type ImageCodec interface {
 }
 
 // Decode decodes an image with default image.Decode decoder from the given reader. It returns the decoded image, format and error if occurred.
-func Decode(reader io.Reader) (image.Image, string, error) {
+func Decode(reader io.Reader, options map[string]interface{}) (image.Image, string, error) {
 	return image.Decode(reader)
 }
