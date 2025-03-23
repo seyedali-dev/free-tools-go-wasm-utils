@@ -1,0 +1,13 @@
+package codecstrategy
+
+import (
+	"image"
+
+	"github.com/seyedali-dev/free-tools-go-wasm-utils/codec"
+)
+
+type icoEncoder struct{}
+
+func (e *icoEncoder) Encode(img image.Image, options ...codec.Option) ([]byte, error) {
+	return ico.Encode(img)
+}

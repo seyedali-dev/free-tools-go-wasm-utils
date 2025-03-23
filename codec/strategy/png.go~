@@ -1,0 +1,28 @@
+package codecstrategy
+
+import (
+	"image"
+	"image/png"
+	"io"
+
+	"github.com/seyedali-dev/free-tools-go-wasm-utils/codec/types"
+)
+
+// PNGCodec implements codec.ImageCodec for PNG format.
+type PNGCodec struct{}
+
+// Encode encodes a PNG image to the given writer. It takes types.CompressionLevel as an option to specify the compression level.
+func (pngCodec *PNGCodec) Encode(writer io.Writer, img image.Image, options map[string]interface{}) error {
+	encoder := png.Encoder{}
+	if compStr, ok := options[types.CompressionLevel]; ok {
+		if level, ok := compStr.(png.CompressionLevel); ok {
+			encoder.CompressionLevel = level
+		}
+	}
+	return encoder.Encode(writer, img)
+}
+
+// Decode decodes a PNG image from the given reader. It uses the png.Decode function.
+func (pngCodec *PNGCodec) Decode(reader io.Reader, _ map[string]interface{}) (image.Image, error) {
+	return png.Decode(reader)
+}
