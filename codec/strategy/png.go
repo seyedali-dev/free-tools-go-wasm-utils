@@ -13,7 +13,7 @@ import (
 // PNGCodec implements codec.ImageCodec for PNG format.
 type PNGCodec struct{}
 
-// Encode encodes a PNG image to the given writer. It takes types.CompressionLevel as an option to specify the compression level.
+// Encode encodes a PNG image to the given writer. It takes types.CompressionLevel and types.BackgroundColor as an option to specify the compression level.
 func (pngCodec *PNGCodec) Encode(writer io.Writer, img image.Image, options map[string]interface{}) error {
 	encoder := png.Encoder{}
 	encoder.CompressionLevel = png.DefaultCompression
