@@ -33,11 +33,10 @@ func init() {
 	Logger = logger.New(logger.Debug)
 }
 
-func RecoverAndRejectJS(reject js.Value) {
+func Recover(reject js.Value) {
 	if r := recover(); r != nil {
 		errMsg := fmt.Sprintf("Unexpected error: %v", r)
 		Logger.Error(errMsg)
-
 		reject.Invoke(errMsg)
 	}
 }
