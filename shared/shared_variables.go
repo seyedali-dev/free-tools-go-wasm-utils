@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"syscall/js"
 
+	"github.com/seyedali-dev/free-tools-go-wasm-utils/errors"
 	"github.com/seyedali-dev/free-tools-go-wasm-utils/logger"
 )
 
@@ -20,7 +21,7 @@ func init() {
 
 func RecoverAndRejectJS(reject js.Value) {
 	if r := recover(); r != nil {
-		errMsg := fmt.Sprintf("Unexpected error: %v", r)
+		errMsg := errors.Err.WrapErr(fmt.Errorf("(unexpected error: %v)", r)).Error()
 		Logger.Error(errMsg)
 
 		reject.Invoke(errMsg)
