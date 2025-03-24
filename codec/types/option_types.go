@@ -11,4 +11,6 @@ const (
 	Dimension         = "dimension"
 	UseExtendedFormat = "useExtendedFormat"
 	BackgroundColor   = "backgroundColor"
+	Width             = "width"
+	Height            = "height"
 )

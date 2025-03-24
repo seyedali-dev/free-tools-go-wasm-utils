@@ -15,7 +15,7 @@ import (
 //   - The actual repo :: https://github.com/HugoSmits86/nativewebp,
 type WEBPCodec struct{}
 
-// Encode encodes a WEBP image to the given writer. It takes types.Quality as an option.
+// Encode encodes a WEBP image to the given writer. It takes types.UseExtendedFormat as an option.
 func (webpCodec *WEBPCodec) Encode(writer io.Writer, img image.Image, options map[string]interface{}) error {
 	var webpOpts *nativewebp.Options
 
@@ -24,7 +24,7 @@ func (webpCodec *WEBPCodec) Encode(writer io.Writer, img image.Image, options ma
 			webpOpts.UseExtendedFormat = uefBool
 		}
 	}
-	// The nativewebp package may expose a function like Encode with quality.
+
 	return nativewebp.Encode(writer, img, webpOpts)
 }
 

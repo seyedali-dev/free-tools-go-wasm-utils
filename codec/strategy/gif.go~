@@ -9,7 +9,7 @@ import (
 	"github.com/seyedali-dev/free-tools-go-wasm-utils/codec/types"
 )
 
-// GIFCodec implements ImageCodec for GIF format.
+// GIFCodec implements codec.ImageCodec for GIF format.
 type GIFCodec struct{}
 
 // Encode encodes an GIF image to the given writer. It takes types.NumColors, types.Quantizer, and types.Drawer as options.
