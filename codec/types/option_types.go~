@@ -15,6 +15,6 @@ const (
 	Height            = "height"
 
 	// An InterpolationFunction provides the parameters that describe an
-	// interpolation kernel. It is used for resizing image options.
+	// interpolation kernel.
 	InterpolationFunction = "interpolationFunction"
 )
