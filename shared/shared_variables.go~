@@ -14,3 +14,4 @@ var Logger *logger.Logger
 func init() {
 	Logger = logger.New(logger.Debug)
 }
+

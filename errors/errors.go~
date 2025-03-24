@@ -25,7 +25,7 @@ func (ce *CustomError) Error() string {
 // but still needs to be propagated to the caller.
 func (ce *CustomError) WrapErr(err error) error {
 	ce.Err = err
-	return fmt.Errorf("%v :: %v: %w", ce.Code, ce.Message, err)
+	return fmt.Errorf("%v :: %v - %w", ce.Code, ce.Message, err)
 }
 
 // Wrap wraps an existing error with a CustomError.

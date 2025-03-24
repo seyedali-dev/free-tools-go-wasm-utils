@@ -1,6 +1,11 @@
 package errors
 
-import "fmt"
+import (
+	"fmt"
+	"syscall/js"
+
+	"github.com/seyedali-dev/free-tools-go-wasm-utils/shared"
+)
 
 // CustomError defines a structured error with a code, a message, and an underlying error.
 type CustomError struct {
@@ -50,3 +55,12 @@ var (
 	ErrInvalidArgument      = &CustomError{Code: "InvalidArgument", Message: "invalid argument"}
 	Err                     = &CustomError{Code: "Error", Message: "unknown error"}
 )
+
+func RecoverAndRejectJS(reject js.Value) {
+	if r := recover(); r != nil {
+		errMsg := Err.WrapErr(fmt.Errorf("(recoverd from panic: %v)", r)).Error()
+		shared.Logger.Error(errMsg)
+
+		reject.Invoke(errMsg)
+	}
+}
