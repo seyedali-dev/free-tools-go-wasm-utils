@@ -14,8 +14,3 @@ type BMPCodec struct{}
 func (bmpCodec *BMPCodec) Encode(writer io.Writer, img image.Image, _ map[string]interface{}) error {
 	return bmp.Encode(writer, img)
 }
-
-// Decode decodes a BMP image from the given reader. It uses the bmp.Decode function.
-func (bmpCodec *BMPCodec) Decode(reader io.Reader, _ map[string]interface{}) (image.Image, error) {
-	return bmp.Decode(reader)
-}

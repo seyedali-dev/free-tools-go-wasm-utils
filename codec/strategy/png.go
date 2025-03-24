@@ -38,8 +38,3 @@ func (pngCodec *PNGCodec) Encode(writer io.Writer, img image.Image, options map[
 
 	return encoder.Encode(writer, img)
 }
-
-// Decode decodes a PNG image from the given reader. It uses the png.Decode function.
-func (pngCodec *PNGCodec) Decode(reader io.Reader, _ map[string]interface{}) (image.Image, error) {
-	return png.Decode(reader)
-}

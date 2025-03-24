@@ -27,8 +27,3 @@ func (webpCodec *WEBPCodec) Encode(writer io.Writer, img image.Image, options ma
 
 	return nativewebp.Encode(writer, img, webpOpts)
 }
-
-// Decode decodes a WEBP image from the given reader. It uses the nativewebp.Decode function.
-func (webpCodec *WEBPCodec) Decode(reader io.Reader, _ map[string]interface{}) (image.Image, error) {
-	return nativewebp.Decode(reader)
-}

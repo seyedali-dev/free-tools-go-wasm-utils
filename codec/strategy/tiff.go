@@ -25,8 +25,3 @@ func (tiffCodec *TIFFCodec) Encode(writer io.Writer, img image.Image, options ma
 		Predictor:   true,
 	})
 }
-
-// Decode decodes a TIFF image from the given reader. It uses the tiff.Decode function.
-func (tiffCodec *TIFFCodec) Decode(reader io.Reader, _ map[string]interface{}) (image.Image, error) {
-	return tiff.Decode(reader)
-}

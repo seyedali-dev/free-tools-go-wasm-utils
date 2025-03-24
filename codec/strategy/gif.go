@@ -33,8 +33,3 @@ func (gifCodec *GIFCodec) Encode(writer io.Writer, img image.Image, options map[
 
 	return gif.Encode(writer, img, gifOpts)
 }
-
-// Decode decodes an GIF image from the given reader. It uses the gif.Decode function.
-func (gifCodec *GIFCodec) Decode(reader io.Reader, _ map[string]interface{}) (image.Image, error) {
-	return gif.Decode(reader)
-}

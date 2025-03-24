@@ -41,10 +41,3 @@ func ResizeImage(img image.Image, size int) image.Image {
 	draw.CatmullRom.Scale(dst, dst.Bounds(), img, srcBounds, draw.Over, nil)
 	return dst
 }
-
-// Decode decodes an ICO image from the given reader. It uses the default image.Decode function.
-func (icoCodec *ICOCodec) Decode(reader io.Reader, _ map[string]interface{}) (image.Image, error) {
-	img, _, err := image.Decode(reader)
-
-	return img, err
-}

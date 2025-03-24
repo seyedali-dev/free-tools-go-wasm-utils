@@ -22,8 +22,3 @@ func (jpegCodec *JPEGCodec) Encode(writer io.Writer, img image.Image, options ma
 	opts := &jpeg.Options{Quality: quality}
 	return jpeg.Encode(writer, img, opts)
 }
-
-// Decode decodes a JPEG image from the given reader. It uses the jpeg.Decode function.
-func (jpegCodec *JPEGCodec) Decode(r io.Reader, _ map[string]interface{}) (image.Image, error) {
-	return jpeg.Decode(r)
-}
