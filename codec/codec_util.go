@@ -14,17 +14,17 @@ import (
 )
 
 // Base64ImgToImg converts a base64-encoded image string to an image.Image.
-func Base64ImgToImg(base64Image string) (image.Image, error) {
+func Base64ImgToImg(base64Image string) (image.Image, string, error) {
 	if len(base64Image) == 0 {
-		return nil, errors.Err.WrapErr(fmt.Errorf("base64 image data is empty"))
+		return nil, "", errors.Err.WrapErr(fmt.Errorf("base64 image data is empty"))
 	}
 
-	baseImg, _, err := decodeImage(base64Image)
+	baseImg, format, err := decodeImage(base64Image)
 	if err != nil {
-		return nil, errors.Err.WrapErr(err)
+		return nil, "", errors.Err.WrapErr(err)
 	}
 
-	return normalizeImage(baseImg), nil
+	return normalizeImage(baseImg), format, nil
 }
 
 // decodeImage handles Base64 decoding and image format detection.
