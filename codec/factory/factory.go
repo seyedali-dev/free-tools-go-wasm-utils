@@ -18,10 +18,12 @@ import (
 //  7. codec.GIF: GIF format
 //  8. codec.ICO: ICO format with default dimension (codecstrategy.DefaultICOSize)
 func GetEncoderFactory(format codec.SupportedCodecFormat) (codec.ImageCodec, error) {
-	switch format {
+	normalizeFormat := codec.NormalizeJPEGFormat(format)
+
+	switch normalizeFormat {
 	case codec.PNG:
 		return &codecstrategy.PNGCodec{}, nil
-	case codec.JPEG, codec.JPG:
+	case codec.JPEG:
 		return &codecstrategy.JPEGCodec{}, nil
 	case codec.WEBP:
 		return &codecstrategy.WEBPCodec{}, nil

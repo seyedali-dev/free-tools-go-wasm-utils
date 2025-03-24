@@ -125,3 +125,13 @@ func ParseHexColor(s string) (color.Color, error) {
 
 	return color.RGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: 255}, nil
 }
+
+// NormalizeJPEGFormat normalizes the format to a JPEG family image formats if the input format is JPEG.
+func NormalizeJPEGFormat(format SupportedCodecFormat) SupportedCodecFormat {
+	switch format {
+	case JPEG, JPG, JFIF, JP2, JPEGXR, JPE:
+		return JPEG
+	default:
+		return format
+	}
+}
