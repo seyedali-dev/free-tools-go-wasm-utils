@@ -53,7 +53,7 @@ var (
 	ErrParseHexColor        = &CustomError{Code: "ParseHexColor", Message: "failed to parse hex color"}
 	ErrInvalidArgumentCount = &CustomError{Code: "InvalidArgumentCount", Message: "invalid argument count"}
 	ErrInvalidArgument      = &CustomError{Code: "InvalidArgument", Message: "invalid argument"}
-	Err                     = &CustomError{Code: "Error", Message: "unknown error"}
+	Err                     = &CustomError{Code: "UnknownError", Message: "unknown error"}
 )
 
 func RecoverAndRejectJS(reject js.Value) {
