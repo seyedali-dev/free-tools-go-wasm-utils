@@ -49,6 +49,7 @@ func Wrap(err error, code, message string) error {
 var (
 	ErrDecodeImage          = &CustomError{Code: "DecodeImageError", Message: "failed to decode image"}
 	ErrEncodeImage          = &CustomError{Code: "EncodeImageError", Message: "failed to encode image"}
+	ErrInvalidBase64        = &CustomError{Code: "InvalidBase64", Message: "invalid base64 encoded image"}
 	ErrUnsupportedFormat    = &CustomError{Code: "UnsupportedFormat", Message: "format is not supported"}
 	ErrParseHexColor        = &CustomError{Code: "ParseHexColor", Message: "failed to parse hex color"}
 	ErrInvalidArgumentCount = &CustomError{Code: "InvalidArgumentCount", Message: "invalid argument count"}
