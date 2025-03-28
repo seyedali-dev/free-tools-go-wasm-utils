@@ -9,6 +9,7 @@ import (
 	"image/draw"
 	"strconv"
 	"strings"
+	"syscall/js"
 
 	"github.com/seyedali-dev/free-tools-go-wasm-utils/errors"
 )
@@ -134,4 +135,21 @@ func NormalizeJPEGFormat(format SupportedCodecFormat) SupportedCodecFormat {
 	default:
 		return format
 	}
+}
+
+// CopyBytesToGo takes a JS Uint8Array and returns a go byte slice.
+func CopyBytesToGo(jsData js.Value) []byte {
+	byteLength := jsData.Get("length").Int()
+	fileBytes := make([]byte, byteLength)
+	_ = js.CopyBytesToGo(fileBytes, jsData)
+
+	return fileBytes
+}
+
+// CopyBytesToJS takes a byte slice and returns a JS Uint8Array.
+func CopyBytesToJS(data []byte) js.Value {
+	jsArray := js.Global().Get("Uint8Array").New(len(data))
+	js.CopyBytesToJS(jsArray, data)
+
+	return jsArray
 }
