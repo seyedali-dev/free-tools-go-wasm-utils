@@ -41,7 +41,7 @@ func (l *Logger) Debug(msg string) {
 	// Check if the logger's level allows for Debug messages.
 	if l.level <= Debug {
 		// Log the message to the JavaScript console with a debug prefix.
-		JSLog("[DEBUG]  " + msg)
+		JSLog("[DEBUG] " + msg)
 	}
 }
 
