@@ -3,10 +3,10 @@ package logger
 import "syscall/js"
 
 // JSLog writes messages to the JavaScript console in WASM environments.
-// It prefixes each message with "[GO_WASM] ::" for identification.
+// It prefixes each message with "[GO_WASM] :: " for identification.
 func JSLog(message string) {
 	// Access the global JavaScript object and call the console's log method
-	// to output the message prefixed with "[GO_WASM] ::".
+	// to output the message prefixed with "[GO_WASM]".
 	js.Global().Get("console").Call("log", "[GO_WASM] :: "+message)
 }
 
@@ -41,7 +41,7 @@ func (l *Logger) Debug(msg string) {
 	// Check if the logger's level allows for Debug messages.
 	if l.level <= Debug {
 		// Log the message to the JavaScript console with a debug prefix.
-		JSLog("[DEBUG] :: " + msg)
+		JSLog("[DEBUG]  " + msg)
 	}
 }
 
@@ -52,7 +52,7 @@ func (l *Logger) Info(msg string) {
 	// Check if the logger's level allows for Info messages.
 	if l.level <= Info {
 		// Log the message to the JavaScript console with an info prefix.
-		JSLog("[INFO] :: " + msg)
+		JSLog("[INFO]  " + msg)
 	}
 }
 
@@ -62,7 +62,7 @@ func (l *Logger) Error(msg string) {
 	// Check if the logger's level allows for Error messages.
 	if l.level <= Error {
 		// Log the message to the JavaScript console with an error prefix.
-		JSLog("[ERROR] :: " + msg)
+		JSLog("[ERROR] " + msg)
 	}
 }
 
@@ -72,6 +72,6 @@ func (l *Logger) Warn(msg string) {
 	// Check if the logger's level allows for Warn messages.
 	if l.level <= Warn {
 		// Log the message to the JavaScript console with a warn prefix.
-		JSLog("[WARN] :: " + msg)
+		JSLog("[WARN]  " + msg)
 	}
 }

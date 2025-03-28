@@ -30,7 +30,11 @@ func (ce *CustomError) Error() string {
 // but still needs to be propagated to the caller.
 func (ce *CustomError) WrapErr(err error) error {
 	ce.Err = err
-	return fmt.Errorf("%v :: %v - %w", ce.Code, ce.Message, err)
+	if ce.Message == "" {
+		return fmt.Errorf("%v :: %w", ce.Code, ce.Err)
+	}
+
+	return fmt.Errorf("%v :: %v - %w", ce.Code, ce.Message, ce.Err)
 }
 
 // Wrap wraps an existing error with a CustomError.
@@ -54,7 +58,7 @@ var (
 	ErrParseHexColor        = &CustomError{Code: "ParseHexColor", Message: "failed to parse hex color"}
 	ErrInvalidArgumentCount = &CustomError{Code: "InvalidArgumentCount", Message: "invalid argument count"}
 	ErrInvalidArgument      = &CustomError{Code: "InvalidArgument", Message: "invalid argument"}
-	Err                     = &CustomError{Code: "UnknownError", Message: "unknown error"}
+	Err                     = &CustomError{Code: "UnknownError"}
 )
 
 func RecoverAndRejectJS(reject js.Value) {
