@@ -80,18 +80,68 @@ func normalizeImage(img image.Image) *image.RGBA {
 }
 
 // ApplyBackgroundColor applies a background color to the source image.
-func ApplyBackgroundColor(img image.Image, bg color.Color) image.Image {
-	// Create a new RGBA image with the same dimensions
+func ApplyBackgroundColor(img image.Image, bgColor color.Color) image.Image {
+	// Check if the image already has no transparency (no need to process)
+	if !hasTransparency(img) {
+		return img
+	}
+
+	// Create a new RGBA image with the background color
 	bounds := img.Bounds()
-	bgImg := image.NewRGBA(bounds)
+	newImg := image.NewRGBA(bounds)
 
-	// Fill the background with the specified color
-	draw.Draw(bgImg, bounds, &image.Uniform{C: bg}, image.Point{}, draw.Src)
+	// Fill with background color first
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			newImg.Set(x, y, bgColor)
+		}
+	}
 
-	// Draw the source image on top
-	draw.Draw(bgImg, bounds, img, bounds.Min, draw.Over)
+	// Then overlay the original image, respecting alpha
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			origColor := img.At(x, y)
+			r1, g1, b1, a1 := origColor.RGBA()
 
-	return bgImg
+			// If fully opaque, just use the original color
+			if a1 == 0xffff {
+				newImg.Set(x, y, origColor)
+				continue
+			}
+
+			// If fully transparent, keep the background color
+			if a1 == 0 {
+				continue
+			}
+
+			// Otherwise blend with background
+			r2, g2, b2, _ := bgColor.RGBA()
+
+			// Alpha blending formula
+			alpha := float64(a1) / 0xffff
+			r := uint8((float64(r1)*alpha + float64(r2)*(1-alpha)) / 0x101)
+			g := uint8((float64(g1)*alpha + float64(g2)*(1-alpha)) / 0x101)
+			b := uint8((float64(b1)*alpha + float64(b2)*(1-alpha)) / 0x101)
+
+			newImg.Set(x, y, color.RGBA{R: r, G: g, B: b, A: 0xff})
+		}
+	}
+
+	return newImg
+}
+
+// hasTransparency detects if an image has transparency.
+func hasTransparency(img image.Image) bool {
+	bounds := img.Bounds()
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			_, _, _, a := img.At(x, y).RGBA()
+			if a < 0xffff {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // ParseHexColor converts a hex string to a color.Color.
