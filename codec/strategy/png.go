@@ -26,7 +26,9 @@ func (pngCodec *PNGCodec) Encode(writer io.Writer, img image.Image, options map[
 	if options[types.CompressionLevel] != nil {
 		if compLvlIntfc, ok := options[types.CompressionLevel]; ok {
 			if level, ok := compLvlIntfc.(png.CompressionLevel); ok {
-				encoder.CompressionLevel = level
+				if level > 0 {
+					encoder.CompressionLevel = level
+				}
 			} else {
 				return errors.ErrInvalidArgument.WrapErr(fmt.Errorf("invalid compression level: %+v", compLvlIntfc))
 			}

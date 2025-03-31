@@ -19,12 +19,9 @@ func (jpegCodec *JPEGCodec) Encode(writer io.Writer, img image.Image, options ma
 			quality = qInt
 		}
 	}
-
 	opts := &jpeg.Options{}
 	if quality > 0 {
 		opts.Quality = quality
 	}
-
-	//Encode
 	return jpeg.Encode(writer, img, opts)
 }

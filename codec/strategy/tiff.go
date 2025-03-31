@@ -13,15 +13,17 @@ type TIFFCodec struct{}
 
 // Encode encodes a TIFF image to the given writer. It takes types.CompressionType as an option to specify the compression type.
 func (tiffCodec *TIFFCodec) Encode(writer io.Writer, img image.Image, options map[string]interface{}) error {
-	compressionType := tiff.Uncompressed // Default compression type
+	var compressionType tiff.CompressionType
 	if compTypeStr, ok := options[types.CompressionType]; ok {
 		if compType, ok := compTypeStr.(int); ok {
 			compressionType = tiff.CompressionType(compType)
 		}
 	}
 
-	return tiff.Encode(writer, img, &tiff.Options{
-		Compression: compressionType,
-		Predictor:   true,
-	})
+	opt := &tiff.Options{Predictor: true}
+	if compressionType > -1 {
+		opt.Compression = compressionType
+	}
+
+	return tiff.Encode(writer, img, opt)
 }
